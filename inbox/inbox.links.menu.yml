@@ -1,0 +1,28 @@
+inbox.home:
+  title: 'ProcessMaker'
+  description: 'ProcessMaker For Drupal 8'
+  route_name: inbox.home
+inbox.newcase:
+  title: 'New Case'
+  description: 'ProcessMaker New Case For Drupal 8'
+  route_name: inbox.newcase
+  parent: inbox.home
+  weight: 1
+inbox.inbox:
+  title: 'Inbox'
+  description: 'ProcessMaker Inbox For Drupal 8'
+  route_name: inbox.inbox
+  parent: inbox.home
+  weight: 2
+inbox.draft:
+  title: 'Draft'
+  description: 'ProcessMaker Draft For Drupal 8'
+  route_name: inbox.draft
+  parent: inbox.home
+  weight: 3
+inbox.search:
+  title: 'Advanced Search'
+  description: 'ProcessMaker Search For Drupal 8'
+  route_name: inbox.search
+  parent: inbox.home
+  weight: 4

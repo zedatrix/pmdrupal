@@ -1,0 +1,181 @@
+<?php
+
+/**
+ * @file
+ * Code for the ProcessMaker Inbox module
+ */
+use Drupal\user\UserInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+
+/**
+ * @param array $page
+ * This class extends the page_attachments() hook.
+ * We use it to attach a library of javascripts and css to a specific route
+ */
+function inbox_page_attachments(array &$page) {
+
+    //Get the route class
+    $route_match = \Drupal::routeMatch();
+    //Get the route name
+    $route_name = $route_match->getRouteName();
+    //Make a check on the route name and add the appropriate library
+    switch($route_name){
+        case 'inbox.inbox':
+            $page['#attached']['library'][] = 'inbox/processmaker.inbox';
+        break;
+        case 'inbox.draft':
+            $page['#attached']['library'][] = 'inbox/processmaker.draft';
+        break;
+        case 'inbox.opencase':
+            $page['#attached']['library'][] = 'inbox/processmaker.form';
+        break;
+        case 'inbox.newcase':
+            $page['#attached']['library'][] = 'inbox/processmaker.form';
+        break;
+        case 'inbox.search':
+            $page['#attached']['library'][] = 'inbox/processmaker.search';
+            break;
+        default:
+        break;
+    }
+}
+
+/**
+ * @return mixed
+ * Implements hook_theme().
+ * We use this function to assign templates and define variables for the twig template for each route
+ */
+function inbox_theme() {
+    $theme['inbox_home'] = [
+        'variables' => ['data' => NULL, 'auth' => NULL, 'workspace' => NULL],
+        'template' => 'inbox.home'
+    ];
+    $theme['inbox_inbox'] = [
+        'variables' => ['data' => NULL, 'auth' => NULL],
+        'template' => 'inbox.inbox'
+    ];
+    $theme['inbox_draft'] = [
+        'variables' => ['data' => NULL, 'auth' => NULL],
+        'template' => 'inbox.draft'
+    ];
+    $theme['inbox_search'] = [
+        'variables' => ['data' => NULL, 'auth' => NULL],
+        'template' => 'inbox.search'
+    ];
+    $theme['inbox_form'] = [
+        'variables' => ['title' => NULL, 'auth' => NULL, 'fields' => NULL, 'submit' => NULL, 'app_number' => NULL],
+        'template' => 'inbox.form'
+    ];
+    $theme['inbox_newcase'] = [
+        'variables' => ['data' => NULL, 'auth' => NULL],
+        'template' => 'inbox.newcase'
+    ];
+
+    return $theme;
+}
+
+
+/**
+ * Implements hook_entity_base_field_info().
+ * We use this function to extend the user profile and add fields to it
+ * For use in the REST connection
+ */
+function inbox_entity_base_field_info(EntityTypeInterface $entity_type) {
+    if ($entity_type->id() === 'user') {
+        $fields['processmaker_username'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Username'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 10,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_password'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Password'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 11,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_url'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker URL'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 12,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_port'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Port'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 13,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_workspace'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Workspace'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 14,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_redirect_url'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Redirect URL'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 15,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_client_id'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Client ID'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 16,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_client_secret'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker Client Secret'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 17,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+        $fields['processmaker_api_scope'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('ProcessMaker API Scope'))
+            ->setDisplayOptions('form', array(
+                'type' => 'string_textfield',
+                'weight' => 18,
+                'settings' => array(
+                    'display_label' => TRUE,
+                ),
+            ))
+            ->setDefaultValue(0);
+
+        return $fields;
+    }
+}

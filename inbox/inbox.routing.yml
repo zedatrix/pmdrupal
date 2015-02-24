@@ -1,0 +1,56 @@
+inbox.home:
+  path: '/processmaker/home'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\HomeController::home'
+    _title: 'ProcessMaker For Drupal 8'
+  requirements:
+    _access: 'TRUE'
+inbox.inbox:
+  path: '/processmaker/inbox'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\InboxController::displayPage'
+    _title: 'ProcessMaker Inbox'
+  requirements:
+    _access: 'TRUE'
+inbox.draft:
+  path: '/processmaker/draft'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\DraftController::displayPage'
+    _title: 'ProcessMaker Draft'
+  requirements:
+    _access: 'TRUE'
+inbox.search:
+  path: '/processmaker/search'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\SearchController::displayPage'
+    _title: 'ProcessMaker Advanced Search'
+  requirements:
+    _access: 'TRUE'
+inbox.opencase:
+  path: '/processmaker/opencase/{prouid}/{appuid}/{delindex}'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\FormController::displayPage'
+    _title: 'ProcessMaker Form'
+  requirements:
+    _access: 'TRUE'
+inbox.saveform:
+  path: '/processmaker/saveForm'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\FormController::saveForm'
+    _title: 'ProcessMaker Form'
+  requirements:
+    _access: 'TRUE'
+inbox.newcase:
+  path: '/processmaker/newCase'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\HomeController::newCase'
+    _title: 'ProcessMaker New Case'
+  requirements:
+    _access: 'TRUE'
+inbox.startcase:
+  path: '/processmaker/startcase/{pro_uid}/{taskuid}'
+  defaults:
+    _controller: '\Drupal\inbox\Controller\HomeController::startCase'
+    _title: 'ProcessMaker Start Case'
+  requirements:
+    _access: 'TRUE'

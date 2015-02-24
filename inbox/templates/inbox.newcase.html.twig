@@ -1,0 +1,22 @@
+{# Check if the user is authenticated #}
+{% if auth %}
+    {# We load the bootstrap CSS #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    {# Show a little information about the page #}
+    <div class="alert alert-info" role="alert">
+        Select a starting task below to start a new case.
+    </div>
+    {# Loop through all the starting tasks #}
+    {% for process in data.starting_tasks %}
+        {# Create a list group to list all the processes #}
+        <ul class="list-group">
+            {# Create a list group for each process #}
+            <li class="list-group-item list-group-item-info">{{ process.prj_name }}</li>
+            {# For each task in a process create an item to start a new case #}
+           {% for task in process.starting_tasks %}
+               {# Add the process uid and task uid to the url so that we can catch that in the controller. Add the task name for the user interface. #}
+               <li class="list-group-item"><a href="/processmaker/startcase/{{ process.pro_uid }}/{{ task.act_uid }}" class="list-group-item">{{ task.act_name }}</a></li>
+           {% endfor %}
+        </ul>
+    {% endfor %}
+{% endif %}

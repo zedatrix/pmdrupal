@@ -1,0 +1,26 @@
+{# Check if the user is authenticated #}
+{% if auth %}
+{# We load the bootstrap CSS #}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+{# Create the table that will hold the inbox cases. We also create it as a pm_table class to easily access in javascript. We also add the bootstrap classes. #}
+<table class="pm_table table table-hover">
+    {# We create the table head which must match the response from the api #}
+    <thead>
+        <tr id="table_head">
+            <th>Case #</th><th>Process</th><th>Current Task</th><th>Sent By</th><th>Date Sent</th>
+        </tr>
+    </thead>
+    <tbody>
+    {# We loop through the data returned and create a table row for each case with the correct meta data #}
+    {% for row in data %}
+        <tr appuid="{{ row['app_uid'] }}" prouid="{{ row['pro_uid'] }}" delindex="{{ row['del_index'] }}">
+            <td>{{ row['app_number'] }}</td>
+            <td>{{ row['app_pro_title'] }}</td>
+            <td>{{ row['app_tas_title'] }}</td>
+            <td>{{ row['app_del_previous_user'] }}</td>
+            <td>{{ row['del_delegate_date'] }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    {% endif %}

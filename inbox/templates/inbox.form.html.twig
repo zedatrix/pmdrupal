@@ -1,0 +1,65 @@
+{# Check if the user is authenticated #}
+{% if auth %}
+    {# We load the bootstrap CSS #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    {# Create the header with the case number and form title #}
+    <h4><strong>Case #:</strong> {{ app_number }} <strong>Form:</strong> {{title}}</h4>
+    {# Create the form. We define the id as pm_dynaform to use later in javascript. We also specify the endpoint in drupal we will use to save the form and finally specify the method to use as POST #}
+    <form id="pm_dynaform" action="/processmaker/saveForm" method="post">
+        <fieldset>
+            {# We loop through the fields #}
+            {% for row in fields %}
+                {# Create the form group for each row of fields #}
+                <div class="form-group">
+                {% for field in row %}
+                {# For each field in the row of potential fields, since this is pulling from the ProcessMaker api, and ProcessMaker supports multi column layout, we are supporting that in the template as well #}
+                {# If the field type is submit, we don't want to create an element on the form. Also, if there is no field type we don't want to create a blank field #}
+                    {% if field.type != 'submit' and field.type %}
+                        {# If the field type is text, we create a regular field #}
+                        {% if field.type != 'datetime' %}
+                            {# We specify the column span to create the multi column layout #}
+                            <span class="col-md-{{ field.colSpan }}">
+                                {# We add the field name and label #}
+                                <label for="{{ field.name }}">{{ field.label }}</label>
+                                {# Create the input group for each field #}
+                                <div class="input-group">
+                                    {# Create the field and add the type, name and hint that it was created with in ProcessMaker #}
+                                    <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.hint }}" class="form-control" />
+                                    {# Add the icon to make it look pretty #}
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </div>
+                                </div>
+                            </span>
+                        {% elseif field.type == 'datetime' %}
+                            {# If it is a date field, then we will use the jquery ui calendar widget #}
+                            {# We specify the column span to create the multi column layout #}
+                            <span class="col-md-{{ field.colSpan }}">
+                                {# We add the field name and label #}
+                                <label for="{{ field.name }}">{{ field.label }}</label>
+                                {# Create the input group for each field #}
+                                <div class="input-group">
+                                    {# Create the field and the name and hint that it was created with in ProcessMaker #}
+                                    <input type="text" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.hint }}" class="form-control date" />
+                                    {# Add the icon to make it look pretty #}
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endfor %}
+            {# Create hidden fields to store the meta data that will get sent back to the controller to process the save and routing #}
+            <input type="hidden" id="appuid" name="appuid" />
+            <input type="hidden" id="prouid" name="prouid" />
+            <input type="hidden" id="delindex" name="delindex" />
+            {# Create the submit button and pull the label given to the submit button from the ProcessMaker api #}
+            <span class="col-md-12" style="margin-top:1em;">
+                <button type="submit" class="btn btn-success form-control">{{ submit.label }}</button>
+            </span>
+        </fieldset>
+    </form>
+{% endif %}

@@ -1,0 +1,53 @@
+processmaker.inbox:
+  version: 1.x
+  css:
+    theme:
+      css/processmaker.css: {}
+  js:
+    js/inbox.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+processmaker.draft:
+  version: 1.x
+  css:
+    theme:
+      css/processmaker.css: {}
+  js:
+    js/draft.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+
+processmaker.form:
+  version: 1.x
+  css:
+    theme:
+      css/processmaker.css: {}
+  js:
+    js/form.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.ui
+    - core/jquery.ui.datepicker
+    - core/drupalSettings
+processmaker.newcase:
+  version: 1.x
+  css:
+    theme:
+      css/processmaker.css: {}
+  js:
+    js/draft.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+processmaker.search:
+  version: 1.x
+  css:
+    theme:
+      css/processmaker.css: {}
+  js:
+    js/search.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

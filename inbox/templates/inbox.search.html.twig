@@ -1,0 +1,86 @@
+{# Check if the user is authenticated #}
+{% if auth %}
+    {# We load the bootstrap CSS #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    {# Search form #}
+    <form class="form-inline" action="/processmaker/search" method="post">
+        <fieldset>
+            {# Free text search #}
+            <div class="form-group">
+                <label class="" for="search">Search</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Search">
+                </div>
+            </div>
+            {# Status i.e. Inbox, Draft, Completed etc #}
+            <div class="form-group">
+                <label class="" for="app_status">Status</label>
+                <div class="input-group">
+                    <select id="app_status" name="app_status" class="form-control">
+                        <option value="0">Please Select</option>
+                        <option value="to_do">Inbox</option>
+                        <option value="draft">Draft</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            {# Process search #}
+            <div class="form-group">
+                <label class="" for="pro_uid">Process</label>
+                <div class="input-group">
+                    <select id="pro_uid" name="pro_uid" class="form-control">
+                        <option value="0">Please Select</option>
+                        {# Loop through the processes returned from the server#}
+                        {% for project in data.projects %}
+                            {# Fill the value of dropdowns with the process uid and the dropdown text with the process name #}
+                            <option value="{{ project.prj_uid }}">{{ project.prj_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            {# User search #}
+            <div class="form-group">
+                <label class="" for="usr_uid">User</label>
+                <div class="input-group">
+                    <select id="usr_uid" name="usr_uid" class="form-control">
+                        <option value="0">Please Select</option>
+                        {# Loop through the users returned from the server#}
+                        {% for user in data.users %}
+                            {# Fill the value of dropdowns with the user uid and the dropdown text with the user name #}
+                            <option value="{{ user.usr_uid }}">{{ user.usr_firstname }} {{ user.usr_lastname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </fieldset>
+    </form>
+    {# Create the table that will hold the inbox cases. We also create it as a pm_table class to easily access in javascript. We also add the bootstrap classes. #}
+    <table class="pm_table table table-hover">
+        {# We create the table head which must match the response from the api #}
+        <thead>
+        <tr id="table_head">
+            <th>Case #</th><th>Status</th></Status><th>App Title</th><th>Process</th><th>Current Task</th><th>Current User</th><th>Sent By</th><th>Date Created</th><th>Last Updated</th><th>Date Sent</th>
+        </tr>
+        </thead>
+        <tbody>
+        {# We loop through the data returned and create a table row for each case with the correct meta data #}
+        {% for row in data.cases %}
+            <tr appuid="{{ row['app_uid'] }}" prouid="{{ row['pro_uid'] }}" delindex="{{ row['del_index'] }}">
+                <td>{{ row['app_number'] }}</td>
+                <td>{{ row['app_status_label'] }}</td>
+                <td>{{ row['app_title'] }}</td>
+                <td>{{ row['app_pro_title'] }}</td>
+                <td>{{ row['app_tas_title'] }}</td>
+                <td>{{ row['usr_firstname'] }} {{ row['usr_lastname'] }}</td>
+                <td>{{ row['app_del_previous_user'] }}</td>
+                <td>{{ row['app_create_date'] }}</td>
+                <td>{{ row['app_update_date'] }}</td>
+                <td>{{ row['del_delegate_date'] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

@@ -1,0 +1,4 @@
+/* This is for making a pointer on the inbox/draft table rows */
+.pm_table tr{
+    cursor: pointer;
+}

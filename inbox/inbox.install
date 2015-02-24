@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the ProcessMaker Inbox module.
+ */
+//use Drupal\menu_link_content\Entity\MenuLinkContent;
+/**
+ * Implements hook_install().
+ * Here we setup the user profile fields that we add to the user profile.
+ */
+function inbox_install() {
+  $entity_manager = \Drupal::entityManager();
+  $processmaker_username_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_username'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_username_definition);
+  $processmaker_password_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_password'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_password_definition);
+  $processmaker_url_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_url'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_url_definition);
+  $processmaker_port_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_port'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_port_definition);
+  $processmaker_workspace_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_workspace'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_workspace_definition);
+  $processmaker_redirect_url_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_redirect_url'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_redirect_url_definition);
+  $processmaker_client_id_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_client_id'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_client_id_definition);
+  $processmaker_client_secret_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_client_secret'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_client_secret_definition);
+  $processmaker_api_scope_definition = $entity_manager->getFieldStorageDefinitions('user')['processmaker_api_scope'];
+  $entity_manager->onFieldStorageDefinitionCreate($processmaker_api_scope_definition);
+  //MenuLinkContent::create(['menu_name' => 'tools', 'link' => ['uri'=>'user-path:/processmaker/home']])->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ * Here we remove the user profile fields that the module added.
+ */
+function inbox_uninstall() {
+  $entity_manager = \Drupal::entityManager();
+  $processmaker_username_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_username'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_username_definition);
+  $processmaker_password_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_password'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_password_definition);
+  $processmaker_url_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_url'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_url_definition);
+  $processmaker_port_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_port'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_port_definition);
+  $processmaker_workspace_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_workspace'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_workspace_definition);
+  $processmaker_redirect_url_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_redirect_url'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_redirect_url_definition);
+  $processmaker_client_id_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_client_id'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_client_id_definition);
+  $processmaker_client_secret_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_client_secret'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_client_secret_definition);
+  $processmaker_api_scope_definition = $entity_manager->getLastInstalledFieldStorageDefinitions('user')['processmaker_api_scope'];
+  $entity_manager->onFieldStorageDefinitionDelete($processmaker_api_scope_definition);
+}

@@ -1,0 +1,31 @@
+{# Check if the user is authenticated #}
+{% if auth == 'true' %}
+    {# We load the bootstrap CSS #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        {# Create an alert to show the user the dashboard #}
+        <div class="alert alert-info" role="alert">
+            <p>Welcome to your dashboard</p>
+            <p>
+                Normally you would see things typical in a standard dashboard here.
+            </p>
+        </div>
+        {# Create an alert to show the user the data pulled in the authenticated message #}
+        <div class="alert alert-success" role="alert">
+            <p>
+                {{ data }}
+            </p>
+        </div>
+        {# Create an alert to show the user which workspace they are currently logged into #}
+        <div class="alert alert-success" role="alert">
+            <p>
+                You are currently logged into the <strong style="font-size: 12pt;">{{ workspace }}</strong> workspace.
+            </p>
+        </div>
+{% else %}
+    {# If the user is not authenticated, make the alert the red one and show them the non-authenticated response #}
+    <div class="alert alert-error" role="alert">
+        <p>
+            {{ data }}
+        </p>
+    </div>
+{% endif %}
