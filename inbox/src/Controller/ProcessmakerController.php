@@ -108,10 +108,10 @@ class ProcessmakerController extends ControllerBase{
         $this->redirect_url = $this->currentUser()->getAccount()->processmaker_redirect_url;
         $this->client_id = $this->currentUser()->getAccount()->processmaker_client_id;
         $this->client_secret = $this->currentUser()->getAccount()->processmaker_client_secret;
-        $this->client_scope = $this->currentUser()->getAccount()->processmaker_client_scope;
+        $this->client_scope = $this->currentUser()->getAccount()->processmaker_api_scope;
         //For development, keep uncommented for clearing the cache
         //For production, keep commented for increased performance
-        drupal_flush_all_caches();
+        //drupal_flush_all_caches();
     }
 
     /**
@@ -155,7 +155,7 @@ class ProcessmakerController extends ControllerBase{
                 $query_params = array(
                     'client_id' => $this->client_id,
                     'client_secret' => $this->client_secret,
-                    'scope' => $this->client_scope,
+                    'scope' => '*',//$this->client_scope,
                     'grant_type' => 'password',
                     'username' => $this->username,
                     'password' => $this->password
@@ -166,15 +166,17 @@ class ProcessmakerController extends ControllerBase{
                 return $this->token;
             }
             //Specify the oauth token endpoint
-            $endpoint = $this->url . ':' . $this->port . '/workflow/oauth2/token';
+            $endpoint = (strlen($this->port)>0)? $this->url . ':' . $this->port . '/'. $this->workspace .'/oauth2/token' : $this->url . '/'. $this->workspace .'/oauth2/token';
             //Create a new guzzle http client
             $client = \Drupal::httpClient();
             //Create the request as a post request and assign the body the query params
-            $request = $client->post($endpoint, ['body' => $query_params]);
+            $request = $client->createRequest('POST', $endpoint, ['body' => $query_params]);
+            //$request = $client->post($endpoint, ['body' => $query_params]);
             //Specify the headers: content type as form urlencoded and the authorization as Basic with the client_id from the oauth application
             $request->addHeaders(array('content-type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Basic ' . $this->client_id));
             //Assign the class property token the returned response which holds the token array from the api
-            $this->token = $request->json();
+            $response = $client->send($request);
+            $this->token = $response->json();
             //Assign the session array the access token so that it can also be used throughout the php session and not just within this class
             $_SESSION['pm_token']['access_token'] = (isset($this->token['access_token'])) ? $this->token['access_token'] : $_SESSION['pm_token']['access_token'];
             $_SESSION['pm_token']['refresh_token'] = (isset($this->token['refresh_token'])) ? $this->token['refresh_token'] : $_SESSION['pm_token']['refresh_token'];
@@ -222,7 +224,7 @@ class ProcessmakerController extends ControllerBase{
      */
     function _api_call_request($endpoint, $method = 'GET', $data=''){
         //Build the api url
-        $api_url = $this->url. ':' . $this->port . '/api/1.0/workflow';
+        $api_url = $this->url. ':' . $this->port . '/api/1.0/'.$this->workspace;
         //Create the guzzle http client
         $client = \Drupal::httpClient();
         //Switch for each method type
