@@ -45,4 +45,4 @@ Tinker around with it, fork it, break it, enjoy it!
 
 If you need any help with it, you can reach out to me on the #processmaker IRC channel at freenode or on twitter [@ethnp](https://twitter.com/ethnp/).
 
-If you are looking for more information about [ProcessMaker BPMS](http://wwww.processmaker.com/) please contact [sales@processmaker.com](mailto:sales@processmaker.com)
+If you are looking for more information about [ProcessMaker BPMS](http://www.processmaker.com/) please contact [sales@processmaker.com](mailto:sales@processmaker.com)
