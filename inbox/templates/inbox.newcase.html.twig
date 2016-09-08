@@ -15,7 +15,7 @@
             {# For each task in a process create an item to start a new case #}
            {% for task in process.starting_tasks %}
                {# Add the process uid and task uid to the url so that we can catch that in the controller. Add the task name for the user interface. #}
-               <li class="list-group-item"><a href="/processmaker/startcase/{{ process.pro_uid }}/{{ task.act_uid }}" class="list-group-item">{{ task.act_name }}</a></li>
+               <li class="list-group-item"><a href="startcase/{{ process.pro_uid }}/{{ task.act_uid }}" class="list-group-item">{{ task.act_name }}</a></li>
            {% endfor %}
         </ul>
     {% endfor %}

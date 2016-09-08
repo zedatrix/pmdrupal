@@ -83,32 +83,36 @@ class FormController extends ProcessmakerController{
      * This function saves the data from the form in ProcessMaker and routes the case
      */
     public function saveForm(){
-        //Assign the class properties the correct values
-        $this->appuid = $_POST['appuid'];
-        $this->prouid = $_POST['prouid'];
-        $this->delindex = $_POST['delindex'];
-        //Delete the 3 meta data fields so that we can just send the full post to ProcessMaker
-        unset($_POST['appuid']);
-        unset($_POST['prouid']);
-        unset($_POST['delindex']);
-        //Make the call to the api to save the data in ProcessMaker
-        //The object being sent must be a json object, that is why we json_encode it
-        $save = $this->api_call('/cases/'.$this->appuid.'/variable',
-            'PUT',
-            $data = json_encode($_POST)
-        )->json();
-        //If the save response returns a non 0 value, we know it was successful and we can the route the case
-        if($save !== 0){
-            //Make a call to the api to route the case
-            $this->api_call('/cases/'.$this->appuid.'/route-case',
-                'PUT'
-            );
-            //After the routing, return the user to the inbox
-            return $this->redirect('inbox.inbox');
-        }else{
-            //If the case was not successful in saving it, we return the user back to their form so that they know there is an issue
-            //ToDo return a message to the user informing them that their save was unsuccessful
-            return $this->redirect('inbox.opencase', array('prouid' => $this->prouid, 'appuid' => $this->appuid, 'delindex' => $this->delindex));
+        if($this->isAuthorized()){
+            //Assign the class properties the correct values
+            $this->appuid = $_POST['appuid'];
+            $this->prouid = $_POST['prouid'];
+            $this->delindex = $_POST['delindex'];
+            //Delete the 3 meta data fields so that we can just send the full post to ProcessMaker
+            unset($_POST['appuid']);
+            unset($_POST['prouid']);
+            unset($_POST['delindex']);
+            //Make the call to the api to save the data in ProcessMaker
+            //The object being sent must be a json object, that is why we json_encode it
+            $save = $this->api_call('/cases/'.$this->appuid.'/variable',
+                'PUT',
+                $data = json_encode($_POST)
+            )->json();
+
+            //If the save response returns a non 0 value, we know it was successful and we can the route the case
+            if($save !== 0){
+                //Make a call to the api to route the case
+                $this->api_call('/cases/'.$this->appuid.'/route-case',
+                    'PUT'
+                );
+                //After the routing, return the user to the inbox
+                return $this->redirect('inbox.inbox');
+            }else{
+
+                //If the case was not successful in saving it, we return the user back to their form so that they know there is an issue
+                //ToDo return a message to the user informing them that their save was unsuccessful
+                return $this->redirect('inbox.opencase', array('prouid' => $this->prouid, 'appuid' => $this->appuid, 'delindex' => $this->delindex));
+            }
         }
     }
 }

@@ -103,7 +103,7 @@ class ProcessmakerController extends ControllerBase{
         $this->username = $this->currentUser()->getAccount()->processmaker_username;
         $this->password = $this->currentUser()->getAccount()->processmaker_password;
         $this->url = $this->currentUser()->getAccount()->processmaker_url;
-        $this->port = $this->currentUser()->getAccount()->processmaker_port;
+        $this->port = ($this->currentUser()->getAccount()->processmaker_port == '') ? '80' : $this->currentUser()->getAccount()->processmaker_port;
         $this->workspace = $this->currentUser()->getAccount()->processmaker_workspace;
         $this->redirect_url = $this->currentUser()->getAccount()->processmaker_redirect_url;
         $this->client_id = $this->currentUser()->getAccount()->processmaker_client_id;
@@ -225,6 +225,7 @@ class ProcessmakerController extends ControllerBase{
     function _api_call_request($endpoint, $method = 'GET', $data=''){
         //Build the api url
         $api_url = $this->url. ':' . $this->port . '/api/1.0/'.$this->workspace;
+        //die($api_url);
         //Create the guzzle http client
         $client = \Drupal::httpClient();
         //Switch for each method type
@@ -257,8 +258,13 @@ class ProcessmakerController extends ControllerBase{
                     'Authorization' => 'Bearer '.$this->token['access_token']
                 )
             );
-            //Return the response without converting to json because if there is no response, as in the routing case example, that creates an error, so we let the caller request the json obect or array object.
-            return $client->send($request);
+            try{
+                //Return the response without converting to json because if there is no response, as in the routing case example, that creates an error, so we let the caller request the json obect or array object.
+                return $client->send($request);
+            }catch (\GuzzleHttp\Exception\ClientException $e){
+                //die(print_r($data, true));
+                die(print_r($e->getMessage(), true));
+            }
         }
     }
 }

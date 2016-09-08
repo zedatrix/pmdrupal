@@ -8,6 +8,6 @@ $(document).ready(function(){
         //Check if the row is the table head, if so, return because we don't want this to run for a table head
         if($(this).attr('id') === 'table_head') return;
         //Change the url based on the process id and app id and delegation index
-        window.location.href = '/processmaker/opencase/'+$(this).attr('prouid')+'/'+$(this).attr('appuid')+'/'+$(this).attr('delindex');
+        window.location.href = 'opencase/'+$(this).attr('prouid')+'/'+$(this).attr('appuid')+'/'+$(this).attr('delindex');
     });
 });

@@ -5,7 +5,7 @@
     {# Create the header with the case number and form title #}
     <h4><strong>Case #:</strong> {{ app_number }} <strong>Form:</strong> {{title}}</h4>
     {# Create the form. We define the id as pm_dynaform to use later in javascript. We also specify the endpoint in drupal we will use to save the form and finally specify the method to use as POST #}
-    <form id="pm_dynaform" action="/processmaker/saveForm" method="post">
+    <form id="pm_dynaform" action="../../../saveForm" method="post">
         <fieldset>
             {# We loop through the fields #}
             {% for row in fields %}
